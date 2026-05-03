@@ -1,0 +1,34 @@
+/**
+ * Simple Form Validation
+ * Campus Placement Hub
+ */
+
+(function () {
+    'use strict';
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const forms = document.querySelectorAll('form:not(.no-validate)');
+
+        forms.forEach(form => {
+            // Validate on submit
+            form.addEventListener('submit', function (e) {
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    form.classList.add('was-validated');
+
+                    // Simple shake for feedback
+                    form.animate([
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-5px)' },
+                        { transform: 'translateX(5px)' },
+                        { transform: 'translateX(0)' }
+                    ], {
+                        duration: 300
+                    });
+                }
+            });
+        });
+    });
+})();
