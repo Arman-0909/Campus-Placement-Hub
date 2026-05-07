@@ -1,5 +1,5 @@
 <?php
-// hodcompanylist.php (Modernized)
+
 require_once "../includes/config.php";
 session_name("hod");
 session_start();

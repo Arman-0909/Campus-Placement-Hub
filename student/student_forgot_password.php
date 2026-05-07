@@ -1,5 +1,4 @@
 <?php
-// student_forgot_password.php - Standalone Password Change Page for Students
 
 require_once "../includes/config.php";
 session_start();
@@ -13,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // --- Validation ---
     if(empty($regdno) || empty($current_password) || empty($new_password) || empty($confirm_password)){
         $feedback_msg = "Please fill in all fields.";
         $feedback_class = "alert-error";
@@ -24,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $feedback_msg = "New password must be at least 6 characters long.";
         $feedback_class = "alert-error";
     } else {
-        // --- SECURE Logic to Change Password ---
+
         $sql = "SELECT password FROM student WHERE regdno = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $regdno);
@@ -62,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password - Student Portal</title>
-    <!-- Dependencies -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">

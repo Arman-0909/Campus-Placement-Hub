@@ -1,5 +1,5 @@
 <?php  
-// admin_import_data.php — Unified Data Import Hub
+
 require_once "../includes/config.php";
 session_name("staff");
 session_start();
@@ -16,7 +16,6 @@ $active_tab = isset($_POST['import_type']) ? $_POST['import_type'] : (isset($_GE
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// ─── HANDLE FORM SUBMISSIONS ─────────────────────────────────────────
 if(isset($_POST["submit"]))
 {
     if(isset($_FILES['file']) && $_FILES['file']['error'] == 0)
@@ -29,7 +28,6 @@ if(isset($_POST["submit"]))
             $error_count = 0;
             $skipped_count = 0;
 
-            // Auto-detect and skip header row
             $header_keywords = ['regdno', 'registration', 'reg', 'regd', 'registration no', 'registration number', 'reg no', 'company', 'companyname', 'company name', 'company_name', 'job', 'job title', 'job_title', 'name', 'sr', 'sno', 's.no', 'sl'];
             $first_row = fgetcsv($handle);
             $is_header = false;
@@ -44,9 +42,6 @@ if(isset($_POST["submit"]))
             }
             $row_num = $is_header ? 1 : 0;
 
-            // ══════════════════════════════════════════════════════
-            // TAB 1: Import Students
-            // ══════════════════════════════════════════════════════
             if ($_POST['import_type'] === 'students') {
                 while($data = fgetcsv($handle)) {
                     $row_num++;
@@ -70,9 +65,6 @@ if(isset($_POST["submit"]))
                 }
             }
 
-            // ══════════════════════════════════════════════════════
-            // TAB 2: Import/Update Marks (UPSERT)
-            // ══════════════════════════════════════════════════════
             elseif ($_POST['import_type'] === 'marks') {
                 while($data = fgetcsv($handle)) {
                     $row_num++;
@@ -92,9 +84,6 @@ if(isset($_POST["submit"]))
                 }
             }
 
-            // ══════════════════════════════════════════════════════
-            // TAB 3: Update Students (bulk update details & status)
-            // ══════════════════════════════════════════════════════
             elseif ($_POST['import_type'] === 'update_students') {
                 while($data = fgetcsv($handle)) {
                     $row_num++;
@@ -129,9 +118,6 @@ if(isset($_POST["submit"]))
                 }
             }
 
-            // ══════════════════════════════════════════════════════
-            // TAB 4: Import Companies (UPSERT)
-            // ══════════════════════════════════════════════════════
             elseif ($_POST['import_type'] === 'companies') {
                 while($data = fgetcsv($handle)) {
                     $row_num++;
@@ -153,13 +139,10 @@ if(isset($_POST["submit"]))
                 }
             }
 
-            // ══════════════════════════════════════════════════════
-            // TAB 5: Import Jobs
-            // ══════════════════════════════════════════════════════
             elseif ($_POST['import_type'] === 'jobs') {
                 while($data = fgetcsv($handle)) {
                     $row_num++;
-                    // CompanyName, JobTitle, Description, PackageLPA, RequiredCGPA, MaxBacklogs
+
                     if (count($data) >= 2) {
                         $company_name = trim($data[0]);
                         $job_title = trim($data[1]);
@@ -189,7 +172,6 @@ if(isset($_POST["submit"]))
 
             fclose($handle);
 
-            // ── Build feedback message ───────────────────────────
             $parts = [];
             if ($success_count > 0) $parts[] = "<strong>{$success_count} succeeded</strong>";
             if ($skipped_count > 0) $parts[] = "{$skipped_count} unchanged";
@@ -225,7 +207,6 @@ if(isset($_POST["submit"]))
     <title>Import Data - Admin Dashboard</title>
     <?php include '../includes/header_includes.php'; ?>
     <style>
-        /* ── Tab Grid Selector ────────────────────────── */
         .import-selector {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -264,14 +245,12 @@ if(isset($_POST["submit"]))
             width: 20px;
             height: 20px;
         }
-        /* Center the Companies & Jobs row */
         .import-selector .import-tab:nth-child(5) {
             grid-column: 1 / 2;
         }
         .import-selector .import-tab:nth-child(6) {
             grid-column: 2 / 3;
         }
-        /* Group label */
         .selector-divider {
             grid-column: 1 / -1;
             display: flex;
@@ -346,8 +325,6 @@ if(isset($_POST["submit"]))
             <?php include '../includes/header.php'; ?>
             <div class="container" style="padding-top: 2rem;">
                 <div class="card" style="max-width: 700px; margin: 0 auto;">
-
-                    <!-- ── Import Type Selector ────────────────────── -->
                     <div class="import-selector" id="tab-bar">
                         <button class="import-tab <?php echo ($active_tab === 'students') ? 'active' : ''; ?>" data-tab="students" type="button">
                             <i data-lucide="users-round" class="tab-icon"></i><span>Students</span>
@@ -368,7 +345,7 @@ if(isset($_POST["submit"]))
                     </div>
 
                     <?php
-                    // Reusable feedback block
+
                     function render_feedback($msg, $cls, $errs, $active, $expected) {
                         if(!empty($msg) && $active === $expected): ?>
                         <div class="import-feedback <?php echo $cls; ?>">
@@ -381,8 +358,6 @@ if(isset($_POST["submit"]))
                             <?php endif; ?>
                         </div>
                     <?php endif; } ?>
-
-                    <!-- ═══════ TAB 1: Import Students ═══════ -->
                     <div class="tab-panel <?php echo ($active_tab === 'students') ? 'active' : ''; ?>" id="panel-students">
                         <div class="panel-header">
                             <div class="panel-icon" style="background: var(--primary-light); color: var(--primary);"><i data-lucide="users-round" style="width:28px;height:28px;"></i></div>
@@ -409,8 +384,6 @@ if(isset($_POST["submit"]))
                             <button type="submit" name="submit" class="btn btn-primary" style="width:100%;justify-content:center;"><i data-lucide="upload"></i> Import Students</button>
                         </form>
                     </div>
-
-                    <!-- ═══════ TAB 2: Import/Update Marks ═══════ -->
                     <div class="tab-panel <?php echo ($active_tab === 'marks') ? 'active' : ''; ?>" id="panel-marks">
                         <div class="panel-header">
                             <div class="panel-icon" style="background:#dbeafe;color:#2563eb;"><i data-lucide="file-bar-chart" style="width:28px;height:28px;"></i></div>
@@ -436,8 +409,6 @@ if(isset($_POST["submit"]))
                             <button type="submit" name="submit" class="btn btn-primary" style="width:100%;justify-content:center;"><i data-lucide="file-up"></i> Import / Update Marks</button>
                         </form>
                     </div>
-
-                    <!-- ═══════ TAB 3: Update Students ═══════ -->
                     <div class="tab-panel <?php echo ($active_tab === 'update_students') ? 'active' : ''; ?>" id="panel-update_students">
                         <div class="panel-header">
                             <div class="panel-icon" style="background:#fef3c7;color:#d97706;"><i data-lucide="user-cog" style="width:28px;height:28px;"></i></div>
@@ -464,8 +435,6 @@ if(isset($_POST["submit"]))
                             <button type="submit" name="submit" class="btn btn-primary" style="width:100%;justify-content:center;"><i data-lucide="refresh-cw"></i> Update Students</button>
                         </form>
                     </div>
-
-                    <!-- ═══════ TAB 4: Import Companies ═══════ -->
                     <div class="tab-panel <?php echo ($active_tab === 'companies') ? 'active' : ''; ?>" id="panel-companies">
                         <div class="panel-header">
                             <div class="panel-icon" style="background:#fef3c7;color:#ea580c;"><i data-lucide="building-2" style="width:28px;height:28px;"></i></div>
@@ -491,8 +460,6 @@ if(isset($_POST["submit"]))
                             <button type="submit" name="submit" class="btn btn-primary" style="width:100%;justify-content:center;"><i data-lucide="building-2"></i> Import Companies</button>
                         </form>
                     </div>
-
-                    <!-- ═══════ TAB 5: Import Jobs ═══════ -->
                     <div class="tab-panel <?php echo ($active_tab === 'jobs') ? 'active' : ''; ?>" id="panel-jobs">
                         <div class="panel-header">
                             <div class="panel-icon" style="background:#dbeafe;color:#2563eb;"><i data-lucide="briefcase" style="width:28px;height:28px;"></i></div>

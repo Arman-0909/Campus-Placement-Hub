@@ -1,5 +1,5 @@
 <?php
-// fetch_notifications.php - API endpoint for student notifications
+
 if (isset($_GET['role']) && $_GET['role'] === 'admin') {
     session_name("staff");
 }

@@ -1,10 +1,6 @@
-/**
- * Global Delete Confirmation Modal
- * Campus Placement Hub
- */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inject Modal HTML if not exists
+
     if (!document.getElementById('global-confirm-modal')) {
         const modalHtml = `
         <div id="global-confirm-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
@@ -33,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleEl = document.getElementById('confirm-title');
     const msgEl = document.getElementById('confirm-message');
 
-    // Global function to trigger modal
     window.showDeleteModal = function (event, url, title, message) {
         event.preventDefault();
 
@@ -43,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmBtn.href = url;
 
         modal.style.display = 'flex';
-        // Small delay for animation
+
         requestAnimationFrame(() => {
             modalContent.style.transform = 'scale(1)';
             modalContent.style.opacity = '1';
@@ -52,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     };
 
-    // Close logic
     function closeModal() {
         modalContent.style.transform = 'scale(0.95)';
         modalContent.style.opacity = '0';

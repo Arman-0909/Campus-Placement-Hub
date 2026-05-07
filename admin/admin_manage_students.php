@@ -1,5 +1,5 @@
 <?php
-// manage_students.php (Modernized)
+
 session_name("staff");
 session_start();
 
@@ -14,7 +14,6 @@ $add_success = "";
 $is_hod = (isset($_SESSION['role']) && $_SESSION['role'] === 'Hod');
 $department = $_SESSION['department'] ?? '';
 
-    // Add Student Logic
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_student'])) {
         $regdno = trim($_POST['regdno']);
         $name = trim($_POST['name']);
@@ -27,7 +26,7 @@ $department = $_SESSION['department'] ?? '';
     if (empty($regdno) || empty($name) || empty($email) || empty($contact) || empty($dob) || empty($student_department) || empty($password)) {
         $add_error = "Please fill in all fields.";
     } else {
-        // HASHING THE PASSWORD
+
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         
         $sql = "INSERT INTO student (regdno, name, email, contact, dob, department, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -50,7 +49,6 @@ $department = $_SESSION['department'] ?? '';
     }
 }
 
-// Fetch Students
 $students = [];
 $sql_fetch = "SELECT regdno, name, department, resume_path FROM student";
 $params = [];
@@ -86,7 +84,6 @@ $conn->close();
     <?php include '../includes/header_includes.php'; ?>
 </head>
     <style>
-        /* Table Styles */
         .table-container {
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -119,8 +116,6 @@ $conn->close();
         tr:hover {
             background-color: var(--bg-body);
         }
-        
-        /* Column Widths */
         th:nth-child(1) { width: 20%; } /* Reg No */
         th:nth-child(2) { width: 30%; } /* Name */
         th:nth-child(3) { width: 20%; } /* Department */
@@ -144,8 +139,6 @@ $conn->close();
                 </div>
 
                 <div class="grid grid-cols-1 gap-6">
-                    
-                    <!-- Add Student Form -->
                     <div class="card">
                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                             <h3><i data-lucide="user-plus" style="width: 20px; vertical-align: middle;"></i> Add New Student</h3>
@@ -157,7 +150,6 @@ $conn->close();
                             </div>
                         <?php endif; ?>
                         
-
 
                         <form action="../admin/admin_manage_students.php" method="post">
                             <div class="grid grid-cols-2 gap-4">
@@ -224,8 +216,6 @@ $conn->close();
                             </div>
                         </form>
                     </div>
-
-                    <!-- Students List -->
                     <div class="card">
                         <div class="card-header" style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
                             <h3>Existing Students (<?php echo count($students); ?>)</h3>
@@ -300,7 +290,6 @@ $conn->close();
     <script>
         lucide.createIcons();
 
-        // Search Functionality
         document.getElementById('student-search')?.addEventListener('keyup', function() {
             const term = this.value.toLowerCase();
             let visibleCount = 0;
@@ -321,7 +310,6 @@ $conn->close();
             }
         });
 
-        // Password Toggle
         const passToggle = document.querySelector('.password-toggle-icon');
         if (passToggle) {
             passToggle.addEventListener('click', function() {
@@ -336,11 +324,8 @@ $conn->close();
             });
         }
 
-
-
-        // Initialize Pagination
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if pagination script is loaded
+
             if (typeof TablePagination !== 'undefined') {
                 new TablePagination('table', 10); // 10 rows per page
             }

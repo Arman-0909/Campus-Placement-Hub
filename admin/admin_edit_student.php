@@ -1,5 +1,5 @@
 <?php
-// edit_student.php (Modernized)
+
 require_once "../includes/config.php";
 session_name("staff");
 session_start();
@@ -44,8 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['regdno'])) {
 } 
 else if (isset($_GET['regdno'])) {
     $regdno = $_GET['regdno'];
-
-    // Check for flash messages
 
 }
 

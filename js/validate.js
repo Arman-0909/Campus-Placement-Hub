@@ -1,7 +1,3 @@
-/**
- * Simple Form Validation
- * Campus Placement Hub
- */
 
 (function () {
     'use strict';
@@ -10,7 +6,7 @@
         const forms = document.querySelectorAll('form:not(.no-validate)');
 
         forms.forEach(form => {
-            // Validate on submit
+
             form.addEventListener('submit', function (e) {
                 if (!form.checkValidity()) {
                     e.preventDefault();
@@ -18,7 +14,6 @@
 
                     form.classList.add('was-validated');
 
-                    // Simple shake for feedback
                     form.animate([
                         { transform: 'translateX(0)' },
                         { transform: 'translateX(-5px)' },

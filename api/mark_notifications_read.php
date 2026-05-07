@@ -1,5 +1,5 @@
 <?php
-// mark_notifications_read.php - Mark notifications as read
+
 if (isset($_GET['role']) && $_GET['role'] === 'admin') {
     session_name("staff");
 }

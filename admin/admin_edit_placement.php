@@ -1,5 +1,5 @@
 <?php
-// update_placement.php (Modernized Form)
+
 session_start();
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){

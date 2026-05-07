@@ -1,10 +1,8 @@
-<!-- Unified Header -->
 <?php 
-    // Get page name for title and navigation logic
+
     $page = basename($_SERVER['PHP_SELF'], '.php');
     $title = ucwords(str_replace('_', ' ', $page));
-    
-    // Override titles for specific pages
+
     $title_overrides = [
         'admin_dashboard' => 'Dashboard',
         'student_dashboard' => 'Dashboard',
@@ -21,8 +19,7 @@
     if (isset($title_overrides[$page])) {
         $title = $title_overrides[$page];
     }
-    
-    // Only show back button on edit pages (sub-pages opened within session)
+
     $sub_pages = [
         'admin_edit_student' => '../admin/admin_manage_students.php',
         'admin_edit_job' => '../admin/admin_manage_jobs.php',
@@ -34,13 +31,11 @@
     $show_back = isset($sub_pages[$page]);
     $back_url = $sub_pages[$page] ?? null;
 
-    // Check user role (for notifications)
     $is_student = isset($_SESSION['num']) && !isset($_SESSION['role']);
     $is_admin = isset($_SESSION['role']);
 ?>
 <header class="dashboard-header" style="background: white; border-bottom: 1px solid var(--border-light, #f1f5f9); padding: 1.25rem 2.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); background: rgba(255,255,255,0.92);">
     <div class="flex items-center gap-4">
-        <!-- Mobile Sidebar Toggle -->
         <button id="sidebar-toggle" class="btn btn-ghost btn-icon mobile-toggle" style="margin-right: 0.5rem;">
             <i data-lucide="menu"></i>
         </button>
@@ -60,14 +55,11 @@
     
     <div class="flex items-center gap-3">
         <?php if ($is_student || $is_admin): ?>
-        <!-- Notification Bell -->
         <div id="notification-wrapper" style="position: relative;">
             <button id="notification-bell" class="btn btn-ghost btn-icon btn-sm" style="position: relative; padding: 0.5rem; border-radius: 10px;" title="Notifications">
                 <i data-lucide="bell" style="width: 20px; height: 20px;"></i>
                 <span id="notification-badge" style="display: none; position: absolute; top: 2px; right: 2px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: 700; min-width: 16px; height: 16px; border-radius: 50%; display: none; align-items: center; justify-content: center; line-height: 1; padding: 0 4px;">0</span>
             </button>
-            
-            <!-- Notification Dropdown -->
             <div id="notification-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 0.5rem; width: 360px; max-height: 420px; background: white; border-radius: var(--radius-lg, 1rem); box-shadow: 0 20px 40px -8px rgba(0,0,0,0.15), 0 8px 16px -4px rgba(0,0,0,0.08); border: 1px solid var(--border, #e2e8f0); z-index: 9999; overflow: hidden;">
                 <div style="padding: 1rem 1.25rem; border-bottom: 1px solid var(--border, #e2e8f0); display: flex; justify-content: space-between; align-items: center;">
                     <h4 style="margin: 0; font-size: 0.95rem;">Notifications</h4>
@@ -126,8 +118,7 @@
 
     function renderNotifications(data) {
         const { notifications, unread_count } = data;
-        
-        // Update badge
+
         if (unread_count > 0) {
             badge.textContent = unread_count > 9 ? '9+' : unread_count;
             badge.style.display = 'flex';
@@ -163,7 +154,6 @@
                 </a>`;
         }).join('');
 
-        // Re-initialize Lucide icons for the dropdown
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
@@ -174,7 +164,6 @@
             .catch(() => {});
     }
 
-    // Toggle dropdown
     bell.addEventListener('click', function(e) {
         e.stopPropagation();
         isOpen = !isOpen;
@@ -182,7 +171,6 @@
         if (isOpen) fetchNotifications();
     });
 
-    // Close on outside click
     document.addEventListener('click', function(e) {
         if (!dropdown.contains(e.target) && e.target !== bell) {
             isOpen = false;
@@ -190,14 +178,12 @@
         }
     });
 
-    // Mark all read
     markAllBtn.addEventListener('click', function() {
         fetch(markUrl, { method: 'POST' })
             .then(() => fetchNotifications())
             .catch(() => {});
     });
 
-    // Poll for new notifications every 30 seconds
     fetchNotifications();
     setInterval(fetchNotifications, 30000);
 })();

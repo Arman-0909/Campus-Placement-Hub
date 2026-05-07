@@ -1,5 +1,5 @@
 <?php
-// student_jobs.php (Modernized)
+
 require_once '../includes/config.php';
 session_start();
  
@@ -9,7 +9,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !isset($_S
 }
 $regdno = $_SESSION["num"];
 
-// Application Logic
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['apply_for_job'])) {
     $job_id_to_apply = $_POST['job_id'];
     
@@ -18,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['apply_for_job'])) {
         $stmt_apply->bind_param("is", $job_id_to_apply, $regdno);
         try {
             if ($stmt_apply->execute()) {
-                // Ensure admin notifications table exists
+
                 $conn->query("CREATE TABLE IF NOT EXISTS `admin_notifications` (
                   `notification_id` int(11) NOT NULL AUTO_INCREMENT,
                   `type` varchar(50) NOT NULL,
@@ -30,7 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['apply_for_job'])) {
                   KEY `is_read` (`is_read`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
-                // Get job and student info to build notification message
                 $job_info_sql = "SELECT job_title, company_name FROM jobs WHERE job_id = ?";
                 $stmt_job = $conn->prepare($job_info_sql);
                 $stmt_job->bind_param("i", $job_id_to_apply);
@@ -71,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['apply_for_job'])) {
     }
 }
 
-// Fetch Student Data and Placement Status
 $student_cgpa = 0;
 $student_backlogs = 0;
 $student_name = "Student";
@@ -97,10 +94,8 @@ if ($stmt_student = $conn->prepare($sql_student)) {
     $stmt_student->close();
 }
 
-// Filter Logic
 $role_filter = $_GET['role'] ?? '';
 
-// Fetch Eligible Jobs
 $eligible_jobs = [];
 $sql_jobs = "SELECT * FROM jobs WHERE required_cgpa <= ? AND max_backlogs >= ?";
 $types = "di";
@@ -124,7 +119,6 @@ if ($stmt_jobs = $conn->prepare($sql_jobs)) {
     $stmt_jobs->close();
 }
 
-// Fetch Applied Jobs
 $applied_job_ids = [];
 $sql_applied = "SELECT job_id FROM applications WHERE student_regdno = ?";
 if($stmt_applied = $conn->prepare($sql_applied)){
@@ -137,10 +131,8 @@ if($stmt_applied = $conn->prepare($sql_applied)){
     $stmt_applied->close();
 }
 
-// Status Filter Logic
 $status_filter = $_GET['status'] ?? 'all';
 
-// Compute counts before filtering
 $available_count = 0;
 $applied_count = 0;
 foreach ($eligible_jobs as $job) {
@@ -151,7 +143,6 @@ foreach ($eligible_jobs as $job) {
     }
 }
 
-// Apply status filter
 if ($status_filter === 'applied') {
     $eligible_jobs = array_filter($eligible_jobs, function($job) use ($applied_job_ids) {
         return in_array($job['job_id'], $applied_job_ids);
@@ -226,8 +217,6 @@ $conn->close();
                         <?php endif; ?>
                     </div>
                 </div>
-
-                <!-- Smart Filters -->
                 <div class="card" style="margin-bottom: 1.5rem;">
                     <form action="" method="get" class="grid grid-cols-2 gap-4 mobile-stack" style="align-items: end;">
                         <div class="form-group" style="margin-bottom: 0;">
@@ -252,8 +241,6 @@ $conn->close();
                         </div>
                     </form>
                 </div>
-                
-                <!-- Quick Filter Tabs -->
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
                     <a href="student_jobs.php<?php echo $role_filter ? '?role=' . urlencode($role_filter) : ''; ?>" 
                        class="btn btn-sm <?php echo ($status_filter === 'all') ? 'btn-primary' : 'btn-secondary'; ?>" 
@@ -364,7 +351,6 @@ $conn->close();
     </div>
     
     <style>
-        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -438,8 +424,6 @@ $conn->close();
             justify-content: center;
         }
     </style>
-    
-    <!-- Confirmation Modal -->
     <div class="modal-overlay" id="confirmModal">
         <div class="modal-container">
             <div class="modal-icon">
@@ -476,13 +460,11 @@ $conn->close();
             }
             closeModal();
         });
-        
-        // Close on escape key
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
-        
-        // Close on clicking outside
+
         document.getElementById('confirmModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });

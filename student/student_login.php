@@ -1,11 +1,9 @@
 <?php
-    // BEST PRACTICE: Start the session at the very beginning of the script.
+
     session_start();
 
-    // Now, include the database configuration file.
     require_once "../includes/config.php";
-    
-    // If the user is already logged in, redirect them immediately.
+
     if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
         header("location: student_dashboard.php");
         exit;
@@ -13,57 +11,47 @@
 
     $login_error = "";
 
-    // Check if the form was submitted.
     if (isset($_POST['submit'])){
         $uname = $_POST['uname'];
         $password = $_POST['password'];
         $regdno = $_POST['regdno'];
 
-        // Prepare the SQL statement to prevent SQL Injection.
         $sql = "SELECT regdno, name, password FROM student WHERE regdno = ? AND name = ?";
         
         if($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("ss", $regdno, $uname);
             $stmt->execute();
             $stmt->store_result();
-            
-            // Check if exactly one user was found.
+
             if($stmt->num_rows == 1) {
-                // Bind the result from the database to PHP variables.
-                // We rename $db_password to $hashed_password for clarity.
+
                 $stmt->bind_result($id, $name, $hashed_password);
                 
                 if($stmt->fetch()) {
-                    // *** THE CRITICAL SECURITY UPGRADE ***
-                    // Verify the submitted password against the hash stored in the database.
+
                     if(password_verify($password, $hashed_password)) {
-                        
-                        // Password is correct!
-                        
-                        // SECURITY FIX: Regenerate the session ID to prevent session fixation attacks.
+
                         session_regenerate_id(true);
-                        
-                        // Store user data in the session. (No need for a second session_start() call).
+
                         $_SESSION["loggedin"] = true;
                         $_SESSION["username"] = $name; 
                         $_SESSION["num"] = $id; 
 
-                        // Redirect to the student's profile page.
                         header("location: student_dashboard.php");
                         exit(); 
 
                     } else {
-                        // The password did not match the hash.
+
                         $login_error = "Invalid credentials. Please try again.";
                     }
                 }
             } else {
-                // No user was found with that registration number and name.
+
                 $login_error = "Invalid credentials. Please try again.";
             }
             $stmt->close();
         } else {
-            // This error happens if the database query itself fails.
+
             $login_error = "Oops! Something went wrong. Please try again later.";
         }
         $conn->close();
@@ -75,7 +63,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Login - Campus Placement Hub</title>
-    <!-- Dependencies -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -83,15 +70,11 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="login-page">
-    
-    <!-- Background Video -->
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; opacity: 0.1;">
         <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
             <source src="../assets/media/bg.mp4" type="video/mp4">
         </video>
     </div>
-
-    <!-- Login Container -->
     <div class="login-card card" style="position: relative; z-index: 10;">
         <div class="login-header">
             <div class="login-logo">
@@ -165,11 +148,9 @@
         togglePassword.addEventListener('click', function (e) {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
-            // Re-render icon roughly (simpler to just toggle class but using Lucide needs re-render or class swap if using CSS icons)
-            // Ideally we swap the icon name attribute if we were using a library that observed it, 
-            // but for simple JS:
+
             if(type === 'text'){
-                // show eye-off
+
                 togglePassword.innerHTML = '<i data-lucide="eye-off" style="width: 18px;"></i>';
             } else {
                 togglePassword.innerHTML = '<i data-lucide="eye" style="width: 18px;"></i>';

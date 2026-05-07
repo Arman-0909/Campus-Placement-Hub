@@ -1,5 +1,5 @@
 <?php
-// admin_reports.php
+
 session_name("staff");
 session_start();
 
@@ -9,7 +9,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 require_once "../includes/config.php";
 
-// Fetch Filter Options
 $departments = [];
 if($r = $conn->query("SELECT DISTINCT department FROM student ORDER BY department")) {
     while($row = $r->fetch_assoc()) $departments[] = $row['department'];
@@ -20,26 +19,22 @@ if($r = $conn->query("SELECT DISTINCT company_name FROM jobs ORDER BY company_na
     while($row = $r->fetch_assoc()) $companies[] = $row['company_name'];
 }
 
-// Build Query
 $where_clauses = [];
 $params = [];
 $types = "";
 
-// 1. Department Filter
 if (!empty($_GET['dept'])) {
     $where_clauses[] = "s.department = ?";
     $params[] = $_GET['dept'];
     $types .= "s";
 }
 
-// 2. Status Filter
 if (!empty($_GET['status'])) {
     $where_clauses[] = "s.placement_status = ?";
     $params[] = $_GET['status'];
     $types .= "s";
 }
 
-// 3. Company Filter (Complex Join)
 if (!empty($_GET['company'])) {
     $where_clauses[] = "j.company_name = ?";
     $params[] = $_GET['company'];
@@ -100,7 +95,6 @@ $conn->close();
             table { width: 100%; border-collapse: collapse; }
             th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
             h1 { font-size: 18px; color: black; margin-bottom: 10px; }
-            /* Branding for Print */
             .print-header { display: block !important; margin-bottom: 20px; text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
         }
         .print-header { display: none; }
@@ -124,8 +118,6 @@ $conn->close();
                         <i data-lucide="printer"></i> Print Report
                     </button>
                 </div>
-
-                <!-- Filters -->
                 <div class="card mb-4 no-print" style="margin-bottom: 2rem;">
                     <form action="" method="get" class="grid grid-cols-4 gap-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                         <input type="hidden" name="filter" value="1">
@@ -168,8 +160,6 @@ $conn->close();
                         </div>
                     </form>
                 </div>
-
-                <!-- Printable Area -->
                 <div class="card">
                     <div class="print-header">
                         <h2>Campus Placement Hub</h2>

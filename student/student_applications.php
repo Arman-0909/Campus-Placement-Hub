@@ -1,5 +1,5 @@
 <?php
-// student_applications.php (Modernized)
+
 require_once '../includes/config.php';
 session_start();
  
@@ -9,7 +9,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !isset($_S
 }
 $regdno = $_SESSION["num"];
 
-// Fetch applications
 $applications = [];
 $sql = "SELECT a.application_date, a.status, j.company_name, j.job_title, j.package_lpa
         FROM applications a
@@ -47,17 +46,11 @@ $conn->close();
             letter-spacing: 0.01em;
             border: 1px solid transparent;
         }
-        /* Amber — waiting/submitted */
         .status-applied { background: #fef3c7; color: #92400e; border-color: #fde68a; }
-        /* Purple — progress/shortlisted */
         .status-shortlisted { background: #f3e8ff; color: #7c3aed; border-color: #e9d5ff; }
-        /* Blue — active/interviewing */
         .status-interviewing { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
-        /* Green — success/placed */
         .status-selected { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
-        /* Red — rejected */
         .status-rejected { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
-        /* Orange — pending/default */
         .status-pending { background: #ffedd5; color: #c2410c; border-color: #fed7aa; }
     </style>
 </head>

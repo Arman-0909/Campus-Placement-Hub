@@ -1,5 +1,5 @@
 <?php
-// view_applications.php (Modernized)
+
 session_name("staff");
 session_start();
 
@@ -12,7 +12,6 @@ require_once "../includes/config.php";
 $selected_job_id = $_GET['job_id'] ?? null;
 $feedback_msg = null;
 
-// Status Update Logic
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['application_id'])) {
     $application_id = $_POST['application_id'];
     $new_status = $_POST['status'];
@@ -22,11 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['application_id'])) {
         $stmt_update->bind_param("si", $new_status, $application_id);
         if($stmt_update->execute()){
             $_SESSION['flash_message'] = "Application status updated successfully.";
-            
-            // Notify the student about their status change
+
             $notif_check = $conn->query("SHOW TABLES LIKE 'notifications'");
             if ($notif_check && $notif_check->num_rows > 0) {
-                // Get student regdno and job info
+
                 $info_sql = "SELECT a.student_regdno, j.company_name, j.job_title FROM applications a JOIN jobs j ON a.job_id = j.job_id WHERE a.application_id = ?";
                 if ($info_stmt = $conn->prepare($info_sql)) {
                     $info_stmt->bind_param("i", $application_id);
@@ -55,9 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['application_id'])) {
     exit;
 }
 
-
-
-// Fetch Jobs
 $jobs_with_app_counts = [];
 $sql_jobs = "SELECT j.job_id, j.job_title, j.company_name, COUNT(a.application_id) as application_count
              FROM jobs j
@@ -71,7 +66,6 @@ if ($result = $conn->query($sql_jobs)) {
     $result->free();
 }
 
-// Fetch Applicants
 $applicants = [];
 $selected_job_title = "";
 if ($selected_job_id && is_numeric($selected_job_id)) {
@@ -116,8 +110,6 @@ $conn->close();
         }
         .job-list-item:hover, .job-list-item.active { background: var(--bg-hover); }
         .job-list-item.active { border-left: 3px solid var(--primary); background: var(--primary-light); }
-
-        /* Table Styles */
         .table-container {
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -150,8 +142,6 @@ $conn->close();
         tr:hover {
             background-color: var(--bg-body);
         }
-        
-        /* Column Widths - Override global styles for this specific table */
         .table-container table th:nth-child(1),
         .table-container table td:nth-child(1) { width: 30%; text-align: left; }
         
@@ -163,8 +153,6 @@ $conn->close();
         
         .table-container table th:nth-child(4),
         .table-container table td:nth-child(4) { width: 35%; text-align: center; }
-        
-        /* Center the dropdown in Update Status column */
         .table-container table td:nth-child(4) form {
             justify-content: center;
         }
@@ -202,8 +190,6 @@ $conn->close();
             <div class="container" style="padding-top: 2rem;">
                 
                 <div class="card app-view-card" style="min-height: 80vh; padding: 0; overflow: hidden; display: grid;">
-                    
-                    <!-- Left Sidebar: Job List -->
                     <div style="border-right: 1px solid var(--border); display: flex; flex-direction: column;">
                         <div style="padding: 1rem; border-bottom: 1px solid var(--border);">
                             <h3 class="font-bold text-lg mb-2">Job Postings</h3>
@@ -223,8 +209,6 @@ $conn->close();
                             <?php endforeach; ?>
                         </div>
                     </div>
-
-                    <!-- Right Content: Applicant Table -->
                     <div style="display: flex; flex-direction: column; overflow-y: hidden;">
                         <?php if ($selected_job_id): ?>
                             <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 1rem;">
@@ -334,7 +318,6 @@ $conn->close();
     <script>
         lucide.createIcons();
 
-        // Job List Search
         document.getElementById('job-search-input')?.addEventListener('keyup', function() {
             const term = this.value.toLowerCase();
             document.querySelectorAll('.job-list-item').forEach(item => {
@@ -343,7 +326,6 @@ $conn->close();
             });
         });
 
-        // Applicant Search & Filter
         const appSearch = document.getElementById('applicant-search');
         const statusFilter = document.getElementById('filter-status');
         const appRows = document.querySelectorAll('.applicant-row');
@@ -370,10 +352,9 @@ $conn->close();
         if(appSearch) appSearch.addEventListener('keyup', filterApplicants);
         if(statusFilter) statusFilter.addEventListener('change', filterApplicants);
 
-        // Initialize Pagination for Applicants Table
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof TablePagination !== 'undefined') {
-                // Only initialize if table exists
+
                 if (document.querySelector('table')) {
                     new TablePagination('table', 10);
                 }

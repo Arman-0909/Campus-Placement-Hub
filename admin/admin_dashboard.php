@@ -1,5 +1,5 @@
 <?php
-// staff_access.php (Modernized Admin Dashboard)
+
 require_once "../includes/config.php";
 session_name("staff");
 session_start();
@@ -9,13 +9,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-// Stats
 $total_students = $conn->query("SELECT COUNT(regdno) as count FROM student")->fetch_assoc()['count'] ?? 0;
 $total_placed = $conn->query("SELECT COUNT(regdno) as count FROM student WHERE placement_status = 'Placed'")->fetch_assoc()['count'] ?? 0;
 $companies_registered = $conn->query("SELECT COUNT(*) as count FROM company")->fetch_assoc()['count'] ?? 0;
 $active_jobs = $conn->query("SELECT COUNT(*) as count FROM jobs")->fetch_assoc()['count'] ?? 0;
 
-// Chart Data: Placement Growth by Year
 $placement_years = [];
 $result_years = $conn->query("SELECT YEAR(placement_date) as yr, COUNT(*) as cnt FROM placements GROUP BY YEAR(placement_date) ORDER BY yr ASC");
 if ($result_years) {
@@ -24,7 +22,6 @@ if ($result_years) {
     }
 }
 
-// Chart Data: Company Hiring (students per company)
 $company_hiring = [];
 $result_hiring = $conn->query("SELECT j.company_name, COUNT(*) as cnt FROM placements p JOIN jobs j ON p.job_id = j.job_id GROUP BY j.company_name ORDER BY cnt DESC LIMIT 10");
 if ($result_hiring) {
@@ -66,13 +63,9 @@ $conn->close();
         .chart-card canvas {
             max-height: 300px;
         }
-
-        /* Animated number styling */
         .stat-value[data-target] {
             font-variant-numeric: tabular-nums;
         }
-
-        /* Stat card icon pulse animation on load */
         @keyframes iconPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.15); }
@@ -96,8 +89,6 @@ $conn->close();
                     <h1 style="font-size: 1.75rem; color: var(--secondary);">Admin Overview</h1>
                     <p class="text-muted">Manage students, companies, and placement activities.</p>
                 </div>
-
-                <!-- Stats Grid with Animated Numbers -->
                 <div class="grid grid-cols-4 gap-6 mobile-stack" style="margin-bottom: 2rem;">
                     <div class="stat-card">
                         <div>
@@ -131,8 +122,6 @@ $conn->close();
                         <div class="stat-icon blue"><i data-lucide="briefcase"></i></div>
                     </div>
                 </div>
-
-                <!-- Charts Row 1: Line Chart + Pie Chart -->
                 <div class="grid grid-cols-2 gap-6 mobile-stack" style="margin-bottom: 2rem; grid-template-columns: 2fr 1fr;">
                     <div class="chart-card">
                         <h3>
@@ -160,8 +149,6 @@ $conn->close();
                         </div>
                     </div>
                 </div>
-
-                <!-- Charts Row 2: Bar Chart -->
                 <div class="chart-card" style="margin-bottom: 2rem;">
                     <h3>
                         <div style="background: #d1fae5; padding: 0.4rem; border-radius: 8px; color: #059669; display: flex;">
@@ -171,11 +158,7 @@ $conn->close();
                     </h3>
                     <canvas id="barChart" style="max-height: 350px;"></canvas>
                 </div>
-
-                <!-- Row: Quick Find & Data Management -->
                 <div class="grid grid-cols-2 gap-6 mobile-stack" style="margin-bottom: 2rem; grid-template-columns: 2fr 1fr;">
-                    
-                    <!-- Quick Find Student -->
                     <div class="card" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
                         <div class="flex items-center gap-3 mb-4">
                             <div style="background: var(--primary-light); padding: 0.5rem; border-radius: 8px; color: var(--primary);">
@@ -189,8 +172,6 @@ $conn->close();
                             <button type="submit" class="btn btn-primary">Go</button>
                         </form>
                     </div>
-
-                    <!-- Data Management -->
                     <div class="card" style="background: linear-gradient(135deg, var(--secondary), #334155); color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
                         <div class="flex justify-between items-start mb-4">
                             <div>
@@ -204,8 +185,6 @@ $conn->close();
                         </div>
                     </div>
                 </div>
-
-                <!-- Common Actions -->
                 <div class="card">
                      <h3 class="mb-4" style="font-size: 1.25rem;">Common Actions</h3>
                      <div class="grid grid-cols-4 gap-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -231,7 +210,6 @@ $conn->close();
     <script>
         lucide.createIcons();
 
-        // ====== Animated Number Counter ======
         function animateCountUp(el) {
             const target = parseInt(el.getAttribute('data-target'));
             const duration = 1500; // ms
@@ -240,8 +218,7 @@ $conn->close();
             function update(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
-                // Ease out cubic
+
                 const eased = 1 - Math.pow(1 - progress, 3);
                 const current = Math.round(eased * target);
                 
@@ -254,14 +231,12 @@ $conn->close();
             requestAnimationFrame(update);
         }
 
-        // Trigger count-up on page load
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.stat-value[data-target]').forEach(el => {
                 animateCountUp(el);
             });
         });
 
-        // ====== Chart.js Charts ======
         const chartFont = { family: "'Inter', sans-serif", size: 12 };
         const chartColors = {
             primary: '#4f46e5',
@@ -287,7 +262,6 @@ $conn->close();
         Chart.defaults.plugins.legend.labels.usePointStyle = true;
         Chart.defaults.plugins.legend.labels.padding = 16;
 
-        // --- Line Chart: Placement Growth ---
         const lineData = <?php echo json_encode($placement_years); ?>;
         new Chart(document.getElementById('lineChart'), {
             type: 'line',
@@ -335,7 +309,6 @@ $conn->close();
             }
         });
 
-        // --- Pie Chart: Placed vs Unplaced ---
         const placed = <?php echo $total_placed; ?>;
         const unplaced = <?php echo $total_students - $total_placed; ?>;
         new Chart(document.getElementById('pieChart'), {
@@ -368,7 +341,6 @@ $conn->close();
             }
         });
 
-        // --- Bar Chart: Company Hiring ---
         const barData = <?php echo json_encode($company_hiring); ?>;
         new Chart(document.getElementById('barChart'), {
             type: 'bar',

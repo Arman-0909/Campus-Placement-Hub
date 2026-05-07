@@ -4,7 +4,6 @@
 */
 
 :root {
-    /* Color Palette - Indigo/Slate Theme */
     --primary: #4f46e5;
     --primary-hover: #4338ca;
     --primary-light: #eef2ff;
@@ -17,8 +16,6 @@
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
-
-    /* Neutrals */
     --bg-body: #f8fafc;
     --bg-card: #ffffff;
     --bg-input: #f1f5f9;
@@ -31,8 +28,6 @@
 
     --border: #e2e8f0;
     --border-light: #f1f5f9;
-
-    /* Dimensions */
     --radius-sm: 0.5rem;
     --radius-md: 0.75rem;
     --radius-lg: 1rem;
@@ -41,8 +36,6 @@
 
     --header-height: 4.5rem;
     --sidebar-width: 272px;
-
-    /* Premium Shadows - Layered & Colored */
     --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
@@ -50,17 +43,12 @@
     --shadow-xl: 0 20px 40px -8px rgba(0, 0, 0, 0.1), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
     --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.02);
     --shadow-card-hover: 0 12px 28px -6px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
-
-    /* Transitions */
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --duration: 0.2s;
     --duration-md: 0.3s;
 }
-
-/* Dark Theme Removed */
-
 /* =========================================
    Reset & Base
    ========================================= */
@@ -82,8 +70,6 @@ body {
     text-rendering: optimizeLegibility;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
-
-/* Premium Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -143,8 +129,6 @@ textarea {
 /* =========================================
    Utility Components
    ========================================= */
-
-/* Layout */
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -202,8 +186,6 @@ textarea {
 .grid-cols-3 {
     grid-template-columns: repeat(3, 1fr);
 }
-
-/* Typography */
 .text-center {
     text-align: center;
 }
@@ -235,8 +217,6 @@ textarea {
 .font-medium {
     font-weight: 500;
 }
-
-/* Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -377,8 +357,6 @@ textarea {
     padding: 1rem 2rem;
     font-size: 1.125rem;
 }
-
-/* Forms */
 .form-group {
     margin-bottom: 1.25rem;
 }
@@ -412,8 +390,6 @@ textarea {
     box-shadow: 0 0 0 3px var(--primary-light), 0 1px 3px rgba(0, 0, 0, 0.06);
     background-color: #fff;
 }
-
-/* Custom File Input Styling */
 input[type="file"]::file-selector-button {
     margin-right: 1rem;
     background-color: var(--bg-input);
@@ -432,15 +408,11 @@ input[type="file"]::file-selector-button:hover {
     color: var(--primary);
     border-color: var(--primary-light);
 }
-
-/* Textarea Resize Limit */
 textarea.form-control {
     resize: vertical;
     min-height: 100px;
     max-height: 600px;
 }
-
-/* Date Input Styling */
 input[type="date"],
 input[type="datetime-local"],
 input[type="time"] {
@@ -470,8 +442,6 @@ input[type="time"]:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px var(--primary-light);
 }
-
-/* Style the calendar icon */
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="datetime-local"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
@@ -570,8 +540,6 @@ span.flatpickr-weekday {
     font-weight: 600 !important;
     font-size: 0.75rem !important;
 }
-
-/* Cards */
 .card {
     background: var(--bg-card);
     border-radius: var(--radius-lg);
@@ -643,8 +611,6 @@ tbody tr:hover {
     background: linear-gradient(90deg, rgba(var(--primary-rgb, 79, 70, 229), 0.03) 0%, var(--bg-body) 100%);
     border-left-color: var(--primary);
 }
-
-/* Column width hints - consistent across all tables */
 th:first-child,
 td:first-child {
     width: 12%;
@@ -659,8 +625,6 @@ th:nth-child(3),
 td:nth-child(3) {
     width: 20%;
 }
-
-/* Actions and Resume columns - compact */
 th:nth-last-child(1),
 td:nth-last-child(1),
 th:nth-last-child(2),
@@ -674,8 +638,6 @@ td:nth-last-child(1),
 td:nth-last-child(2) {
     text-align: center;
 }
-
-/* Action buttons alignment */
 td .flex {
     justify-content: center;
 }
@@ -683,8 +645,6 @@ td .flex {
 /* =========================================
    Page Specific Styles
    ========================================= */
-
-/* Navbar */
 .navbar {
     height: var(--header-height);
     background: white;
@@ -720,8 +680,6 @@ td .flex {
 .nav-link.active {
     color: var(--primary);
 }
-
-/* Hero Section */
 .hero {
     position: relative;
     padding: 8rem 0 6rem;
@@ -769,8 +727,6 @@ td .flex {
     margin-bottom: 3rem;
     line-height: 1.6;
 }
-
-/* Role Cards - Home Page */
 .role-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -816,8 +772,6 @@ td .flex {
     color: var(--text-muted);
     margin-bottom: 2rem;
 }
-
-/* Login Pages */
 .login-page {
     min-height: 100vh;
     display: flex;
@@ -871,8 +825,6 @@ td .flex {
     font-size: 1.75rem;
     box-shadow: 0 8px 24px -4px rgba(79, 70, 229, 0.25);
 }
-
-/* Dashboard Layout */
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
@@ -909,7 +861,6 @@ td .flex {
 .sidebar-brand i,
 .sidebar-brand svg {
     min-width: 24px;
-    /* Prevent shrinking */
     width: 24px;
     height: 24px;
 }
@@ -921,11 +872,8 @@ td .flex {
     flex: 1;
     overflow-y: auto;
     min-height: 0;
-    /* Important for flex container scrolling */
     margin-right: 0;
-    /* Extend scroll area */
     padding: 0 1.5rem 1.5rem;
-    /* Add padding back to keep content aligned */
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
 }
@@ -1051,8 +999,6 @@ td .flex {
     background: #ffedd5;
     color: #ea580c;
 }
-
-/* Base Grid Utilities */
 .grid {
     display: grid;
 }
@@ -1080,8 +1026,6 @@ td .flex {
 .gap-6 {
     gap: 1.5rem;
 }
-
-/* Responsive */
 @media (max-width: 1024px) {
     .sidebar {
         transform: translateX(-100%);
@@ -1109,8 +1053,6 @@ td .flex {
 .mobile-toggle {
     display: none;
 }
-
-/* Sidebar Overlay */
 .sidebar-overlay {
     position: fixed;
     top: 0;
@@ -1163,8 +1105,6 @@ td .flex {
 .col-span-2 {
     grid-column: span 2;
 }
-
-/* Utilities */
 .flex {
     display: flex;
 }
@@ -1232,8 +1172,6 @@ td .flex {
 .grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
-
-/* Custom Select Style */
 .form-select {
     appearance: none;
     -webkit-appearance: none;
@@ -1247,7 +1185,6 @@ td .flex {
     line-height: 1.5;
     border: 1px solid var(--border);
     border-radius: 9999px;
-    /* Rounded Corners */
     background-color: white;
     color: var(--text-main);
     transition: all 0.2s;
@@ -1264,8 +1201,6 @@ td .flex {
     border-color: var(--primary);
     box-shadow: 0 0 0 4px var(--primary-light);
 }
-
-/* Small variant for tables */
 .form-select-sm {
     padding: 0.35rem 0.75rem;
     padding-right: 2rem !important;
@@ -1273,8 +1208,6 @@ td .flex {
     border-radius: 9999px;
     background-position: right 0.5rem center;
 }
-
-/* Custom JS Select Styles */
 .custom-select-wrapper {
     position: relative;
     user-select: none;
@@ -1294,16 +1227,12 @@ td .flex {
     background: #ffffff;
     border: 1px solid var(--border);
     border-radius: 9999px;
-    /* Rounded pill */
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .custom-select-wrapper.open .custom-select-trigger {
     border-color: var(--primary);
-    /* box-shadow: 0 0 0 4px var(--primary-light); */
-    /* Removed focus ring */
-    /* Keep rounded corners - Detached dropdown style */
     border-radius: 9999px;
     z-index: 101;
 }
@@ -1344,8 +1273,6 @@ td .flex {
 .custom-select-wrapper.open .custom-arrow::after {
     transform: rotate(45deg);
 }
-
-/* Options Container */
 .custom-options {
     position: absolute;
     display: block;
@@ -1360,14 +1287,10 @@ td .flex {
     pointer-events: none;
     z-index: 100;
     margin-top: 8px;
-    /* Gap between trigger and list */
     border-radius: 1rem;
-    /* Fully rounded floating list */
     box-shadow: var(--shadow-lg);
     max-height: 250px;
     overflow-y: auto;
-
-    /* Animation - Simple Fade/Slide */
     transform: translateY(-10px);
     transition: all 0.2s ease;
 }
@@ -1411,8 +1334,6 @@ td .flex {
 .custom-option:last-child {
     border-bottom: none;
 }
-
-/* Remove border-radius manipulation for first/last option to prevent gaps */
 .custom-option:first-child {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -1422,7 +1343,6 @@ td .flex {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
 }
-
 
 /* =========================================
    About Page Styles
@@ -1620,8 +1540,6 @@ td .flex {
     border-radius: 1rem;
     box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
 }
-
-/* Close/Back Button Style */
 .back-btn {
     position: fixed;
     top: 2rem;
@@ -1646,7 +1564,6 @@ td .flex {
 .back-btn:hover {
     background: white;
     color: var(--dst-error, #ef4444);
-    /* Red-ish for close action */
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
     border-color: var(--dst-error, #ef4444);
@@ -1659,8 +1576,6 @@ td .flex {
         box-shadow: var(--shadow-sm);
     }
 }
-
-/* Loading Spinner */
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -1705,8 +1620,6 @@ td .flex {
         transform: rotate(360deg);
     }
 }
-
-/* Button Loading State */
 .btn-loading {
     position: relative;
     color: transparent !important;
@@ -1728,10 +1641,6 @@ td .flex {
     animation: spin 0.8s linear infinite;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
-
-/* Form Validation */
-/* Form Validation */
-/* Scoped to .was-validated to prevent immediate red fields */
 .was-validated .form-control:invalid,
 .was-validated .form-select:invalid,
 .form-control.is-invalid,
@@ -1765,8 +1674,6 @@ td .flex {
 .was-validated :invalid+.invalid-feedback {
     display: block;
 }
-
-/* Shake Animation */
 @keyframes shake {
 
     0%,
@@ -1786,8 +1693,6 @@ td .flex {
 .shake {
     animation: shake 0.3s ease-in-out;
 }
-
-/* Pagination Buttons */
 .page-btn {
     width: 32px;
     height: 32px;
@@ -1819,14 +1724,10 @@ td .flex {
     background: white;
     margin-top: 0 !important;
 }
-
-/* Custom Select - Sticky "All" Option */
 .custom-options {
     max-height: 200px;
     overflow-y: auto;
     position: absolute;
-    /* ... existing styles assumptions ... */
-    /* Ensure existing styles don't break, just adding sticky bit */
 }
 
 .custom-option.option-all {
@@ -1847,19 +1748,12 @@ td .flex {
 /* =========================================
    ROLE-BASED THEMES
    ========================================= */
-
-/* ADMIN THEME — Professional Grey & Black */
 body.theme-admin {
     --primary: #1e293b;
-    /* Slate 800 */
     --primary-hover: #0f172a;
-    /* Slate 900 */
     --primary-light: #e2e8f0;
-    /* Slate 200 */
     --accent: #64748b;
-    /* Slate 500 */
 }
-
 
 body.theme-admin .stat-card:hover {
     box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.15),
@@ -1887,19 +1781,12 @@ body.theme-admin .card:hover {
 body.theme-admin .chart-card:hover {
     box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.1);
 }
-
-/* STUDENT THEME — Royal Blue & Gold (matching main page) */
 body.theme-student {
     --primary: #1e3a8a;
-    /* Blue 900 */
     --primary-hover: #172554;
-    /* Blue 950 */
     --primary-light: #dbeafe;
-    /* Blue 100 */
     --accent: #ca8a04;
-    /* Yellow 600 */
 }
-
 
 body.theme-student .stat-card:hover {
     box-shadow: 0 20px 40px -12px rgba(30, 58, 138, 0.15),
@@ -1933,8 +1820,6 @@ body.theme-student .package-badge {
 /* =========================================
    GLOBAL POLISH & MICRO-DETAILS
    ========================================= */
-
-/* Page Entrance Animation */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -1950,10 +1835,6 @@ body.theme-student .package-badge {
 .dashboard-main>.container {
     animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
-
-
-
-/* Status Badge Colors (for tables & cards) */
 .badge-success,
 .status-placed,
 .status-selected {
@@ -2001,14 +1882,10 @@ body.theme-student .package-badge {
     font-size: 0.8rem;
     font-weight: 600;
 }
-
-/* Subtle Body Background */
 .dashboard-main {
     background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
     min-height: 100vh;
 }
-
-/* Section Headers with Accent Line */
 .dashboard-main h1 {
     position: relative;
     display: inline-block;
@@ -2023,8 +1900,6 @@ body.theme-student .package-badge {
     border-radius: 3px;
     margin-top: 0.5rem;
 }
-
-/* Smooth Image & Icon Hovers */
 .stat-icon {
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -2032,8 +1907,6 @@ body.theme-student .package-badge {
 .stat-card:hover .stat-icon {
     transform: scale(1.1) rotate(-5deg);
 }
-
-/* Focus-Visible Ring for Accessibility */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -2042,8 +1915,6 @@ select:focus-visible {
     outline-offset: 2px;
     border-radius: var(--radius-sm);
 }
-
-/* Pulse Animation for Notification Badge */
 @keyframes pulse {
 
     0%,
@@ -2059,15 +1930,11 @@ select:focus-visible {
 .notification-count {
     animation: pulse 2s infinite;
 }
-
-/* Gradient Border on Focus for Textareas */
 textarea.form-control:focus {
     border-image: linear-gradient(135deg, var(--primary), var(--accent, #3b82f6)) 1;
     border-image-slice: 1;
     border-radius: var(--radius-md);
 }
-
-/* Smooth Link Underline Animation */
 .sidebar-section-title {
     font-size: 0.7rem;
     text-transform: uppercase;

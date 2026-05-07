@@ -1,10 +1,8 @@
 <?php
-// edit_job.php
 
 session_name("staff");
 session_start();
 
-// Ensure the user is logged in
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: admin_login.php");
     exit;
@@ -17,17 +15,14 @@ $job_data = null;
 $feedback_msg = "";
 $feedback_class = "";
 
-// --- Part 1: Handle form submission to UPDATE data ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['job_id'])) {
     $job_id = $_POST['job_id'];
-    
-    // Handle PDF operations
+
     $pdf_filename = null;
     $update_pdf = false;
-    
-    // Check if user wants to delete existing PDF
+
     if (isset($_POST['delete_pdf']) && $_POST['delete_pdf'] == '1') {
-        // Get current PDF filename
+
         $sql_get = "SELECT job_description_pdf FROM jobs WHERE job_id = ?";
         if($stmt_get = $conn->prepare($sql_get)) {
             $stmt_get->bind_param("i", $job_id);
@@ -44,22 +39,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['job_id'])) {
         $pdf_filename = null;
         $update_pdf = true;
     }
-    // Check if new PDF is uploaded
+
     elseif (isset($_FILES['job_pdf']) && $_FILES['job_pdf']['error'] == UPLOAD_ERR_OK) {
         $file = $_FILES['job_pdf'];
         $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        
-        // Validate file type
+
         if ($file_ext !== 'pdf') {
             $feedback_msg = "Only PDF files are allowed.";
             $feedback_class = "alert-error";
         }
-        // Validate file size (5MB max)
+
         elseif ($file['size'] > 5 * 1024 * 1024) {
             $feedback_msg = "File size must be less than 5MB.";
             $feedback_class = "alert-error";
         } else {
-            // Delete old PDF if exists
+
             $sql_get = "SELECT job_description_pdf FROM jobs WHERE job_id = ?";
             if($stmt_get = $conn->prepare($sql_get)) {
                 $stmt_get->bind_param("i", $job_id);
@@ -73,8 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['job_id'])) {
                 }
                 $stmt_get->close();
             }
-            
-            // Generate unique filename and upload
+
             $pdf_filename = uniqid('job_', true) . '.pdf';
             $upload_path = '../uploads/job_pdfs/' . $pdf_filename;
             
@@ -87,8 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['job_id'])) {
             }
         }
     }
-    
-    // Update job data
+
     if (empty($feedback_msg)) {
         if ($update_pdf) {
             $sql = "UPDATE jobs SET job_title = ?, description = ?, package_lpa = ?, required_cgpa = ?, max_backlogs = ?, job_description_pdf = ? WHERE job_id = ?";
@@ -136,15 +128,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['job_id'])) {
         }
     }
 } 
-// --- Part 2: Handle initial page load to GET data ---
+
 else if (isset($_GET['id'])) {
     $job_id = $_GET['id'];
-    
-    // Check for flash messages
 
 }
 
-// --- Part 3: Fetch the job's data to display in the form ---
 if (!empty($job_id)) {
     $sql_fetch = "SELECT * FROM jobs WHERE job_id = ?";
     if($stmt_fetch = $conn->prepare($sql_fetch)) {

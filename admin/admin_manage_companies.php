@@ -1,5 +1,5 @@
 <?php
-// manage_companies.php (Modernized)
+
 session_name("staff");
 session_start();
 
@@ -35,8 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_company'])) {
     }
 }
 
-
-
 $companies = [];
 $sql_fetch = "SELECT companyname, companyname AS id, website, created_at FROM company ORDER BY companyname ASC";
 if ($result = $conn->query($sql_fetch)) {
@@ -54,7 +52,6 @@ $conn->close();
     <?php include '../includes/header_includes.php'; ?>
 </head>
     <style>
-        /* Table Styles */
         .table-container {
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -87,8 +84,6 @@ $conn->close();
         tr:hover {
             background-color: var(--bg-body);
         }
-        
-        /* Column Widths - Override global styles */
         .table-container table th:nth-child(1),
         .table-container table td:nth-child(1) { width: 20%; text-align: left; }
         
@@ -100,8 +95,6 @@ $conn->close();
         
         .table-container table th:nth-child(4),
         .table-container table td:nth-child(4) { width: 20%; text-align: center; }
-        
-        /* Truncate long website URLs */
         .table-container table td:nth-child(2) a {
             display: inline-flex;
             align-items: center;
@@ -111,8 +104,6 @@ $conn->close();
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        
-        /* Center the actions */
         .table-container table td:nth-child(4) .flex {
             justify-content: center;
         }
@@ -133,8 +124,6 @@ $conn->close();
                 </div>
 
                 <div class="grid grid-cols-3 gap-6" style="grid-template-columns: 1fr 2fr;">
-                    
-                    <!-- Add Company Form -->
                     <div class="card" style="height: fit-content;">
                         <div class="card-header" style="margin-bottom: 1.5rem;">
                             <h3><i data-lucide="building-2" style="width: 20px; vertical-align: middle;"></i> Add Company</h3>
@@ -164,8 +153,6 @@ $conn->close();
                             </button>
                         </form>
                     </div>
-
-                    <!-- Companies List -->
                     <div class="card">
                         <div class="card-header" style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
                             <h3>Registered Companies (<?php echo count($companies); ?>)</h3>
@@ -222,11 +209,9 @@ $conn->close();
     </div>
     
 
-
     <script>
         lucide.createIcons();
 
-        // Search Logic
         const searchInput = document.getElementById('company-search');
         
         if (searchInput) {
@@ -245,7 +230,6 @@ $conn->close();
             });
         }
 
-        // Initialize Pagination
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof TablePagination !== 'undefined') {
                 new TablePagination('table', 10);

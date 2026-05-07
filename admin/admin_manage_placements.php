@@ -1,5 +1,5 @@
 <?php
-// manage_placements.php (Modernized)
+
 session_name("staff");
 session_start();
 
@@ -12,7 +12,6 @@ require_once "../includes/config.php";
 $feedback_msg = "";
 $feedback_class = "";
 
-// Record Placement Logic
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_placement'])) {
     $student_regdno = $_POST['student_regdno'];
     $job_id = $_POST['job_id'];
@@ -52,9 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_placement'])) {
     }
 }
 
-
-
-// Fetch Data
 $placements = [];
 $sql_fetch_placements = "SELECT p.placement_id, s.name, j.company_name, j.job_title, p.package_lpa, p.placement_date
                         FROM placements p
@@ -90,7 +86,6 @@ $conn->close();
     <?php include '../includes/header_includes.php'; ?>
 </head>
     <style>
-        /* Table Styles */
         .table-container {
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -123,15 +118,11 @@ $conn->close();
         tr:hover {
             background-color: var(--bg-body);
         }
-        
-        /* Column Widths */
         th:nth-child(1) { width: 25%; } /* Student */
         th:nth-child(2) { width: 30%; } /* Company & Role */
         th:nth-child(3) { width: 15%; } /* Package */
         th:nth-child(4) { width: 15%; } /* Date */
         th:nth-child(5) { width: 15%; } /* Action */
-
-        /* Searchable Select */
         .searchable-select {
             position: relative;
             width: 100%;
@@ -270,8 +261,6 @@ $conn->close();
                 </div>
 
                 <div class="grid grid-cols-3 gap-6" style="grid-template-columns: 1fr 2fr;">
-                    
-                    <!-- Record Placement Form -->
                     <div class="card" style="height: fit-content;">
                         <div class="card-header" style="margin-bottom: 1.5rem;">
                             <h3><i data-lucide="award" style="width: 20px; vertical-align: middle;"></i> Record Placement</h3>
@@ -327,8 +316,6 @@ $conn->close();
                             </button>
                         </form>
                     </div>
-
-                    <!-- Placements List -->
                     <div class="card">
                         <div class="card-header" style="margin-bottom: 1.5rem;">
                             <h3>Placed Students (<?php echo count($placements); ?>)</h3>
@@ -376,11 +363,9 @@ $conn->close();
     </div>
     
 
-
     <script>
         lucide.createIcons();
 
-        // Searchable Select Logic
         (function() {
             const wrapper = document.getElementById('studentSearchSelect');
             const trigger = document.getElementById('studentTrigger');

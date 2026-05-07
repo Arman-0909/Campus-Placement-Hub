@@ -1,5 +1,5 @@
 <?php
-// admin_placement_records.php - Comprehensive Placement Tracking Dashboard
+
 session_name("staff");
 session_start();
 
@@ -10,11 +10,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 require_once "../includes/config.php";
 
-// Get filter parameter
 $filter = $_GET['filter'] ?? 'all';
 $search = $_GET['search'] ?? '';
 
-// Build query based on filter
 $students = [];
 $sql = "SELECT 
             s.regdno,
@@ -36,7 +34,6 @@ $sql = "SELECT
         LEFT JOIN jobs j ON p.job_id = j.job_id
         WHERE 1=1";
 
-// Apply filters
 switch($filter) {
     case 'placed':
         $sql .= " AND p.student_regdno IS NOT NULL";
@@ -55,7 +52,6 @@ switch($filter) {
         break;
 }
 
-// Apply search
 if (!empty($search)) {
     $sql .= " AND (s.name LIKE ? OR s.regdno LIKE ?)";
 }
@@ -83,7 +79,6 @@ if($stmt = $conn->prepare($sql)) {
     $stmt->close();
 }
 
-// Get statistics
 $stats = [
     'total' => 0,
     'placed' => 0,
@@ -107,7 +102,6 @@ if($result = $conn->query($sql_stats)) {
     $result->free();
 }
 
-// Count shortlisted separately
 $sql_shortlisted = "SELECT COUNT(DISTINCT student_regdno) as count FROM applications WHERE status = 'Shortlisted'";
 if($result = $conn->query($sql_shortlisted)) {
     $stats['shortlisted'] = $result->fetch_assoc()['count'];
@@ -159,8 +153,6 @@ $conn->close();
             letter-spacing: 0.05em;
             margin-top: 0.5rem;
         }
-        
-        /* Table Styles */
         .table-container {
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -208,8 +200,6 @@ $conn->close();
                     <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Placement Records</h1>
                     <p class="text-muted">Track student placement status and application progress.</p>
                 </div>
-
-                <!-- Statistics Cards -->
                 <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 2rem;">
                     <a href="?filter=all" class="stat-card <?php echo ($filter == 'all') ? 'active' : ''; ?>" style="text-decoration: none;">
                         <div class="stat-value"><?php echo $stats['total']; ?></div>
@@ -236,8 +226,6 @@ $conn->close();
                         <div class="stat-label">Not Placed</div>
                     </a>
                 </div>
-
-                <!-- Search and Actions -->
                 <div class="card" style="margin-bottom: 2rem;">
                     <form action="" method="get" class="grid grid-cols-2 gap-4" style="grid-template-columns: 1fr auto;">
                         <input type="hidden" name="filter" value="<?php echo htmlspecialchars($filter); ?>">
@@ -256,8 +244,6 @@ $conn->close();
                         </div>
                     </form>
                 </div>
-
-                <!-- Students Table -->
                 <div class="card">
                     <div class="card-header" style="margin-bottom: 1.5rem;">
                         <h3>

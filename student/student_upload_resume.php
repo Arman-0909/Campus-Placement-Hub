@@ -1,5 +1,5 @@
 <?php
-// upload.php (Modernized Offer Letter Upload Processor)
+
 include '../includes/config.php';
 session_start();
 

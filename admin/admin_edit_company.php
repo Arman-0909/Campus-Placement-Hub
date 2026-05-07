@@ -1,9 +1,8 @@
 <?php
-// edit_company.php
+
 session_name("staff");
 session_start();
 
-// Ensure the user is logged in
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: admin_login.php");
     exit;
@@ -16,7 +15,6 @@ $company_data = null;
 $feedback_msg = "";
 $feedback_class = "";
 
-// --- Part 1: Handle form submission to UPDATE data ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['original_company_name'])) {
     $original_company_name = $_POST['original_company_name'];
     $new_company_name = $_POST['company_name'];
@@ -36,18 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['original_company_name'
         }
         $stmt->close();
     }
-    // If we are here, it means there was an error, so we stay on page to show error
+
     $company_name = $new_company_name;
 } 
-// --- Part 2: Handle initial page load to GET data ---
+
 else if (isset($_GET['id'])) {
     $company_name = $_GET['id'];
-    
-    // Check for flash messages
 
 }
 
-// --- Part 3: Fetch the company's data to display in the form ---
 if (!empty($company_name)) {
     $sql_fetch = "SELECT * FROM company WHERE companyname = ?";
     if($stmt_fetch = $conn->prepare($sql_fetch)) {
@@ -103,7 +98,6 @@ $conn->close();
 
                     <?php if($company_data): ?>
                     <form action="../admin/admin_edit_company.php" method="post">
-                        <!-- Hidden field to track the original name in case it's changed -->
                         <input type="hidden" name="original_company_name" value="<?php echo htmlspecialchars($company_data['companyname']); ?>">
 
                         <div class="form-group">

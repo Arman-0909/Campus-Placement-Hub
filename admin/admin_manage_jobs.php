@@ -1,5 +1,5 @@
 <?php
-// manage_jobs.php (Modernized)
+
 session_name("staff");
 session_start();
 
@@ -13,33 +13,30 @@ require_once "../includes/config.php";
 $feedback_msg = "";
 $feedback_class = "";
 
-// Add Job Logic
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_job'])) {
     if (empty(trim($_POST['company_name'])) || empty(trim($_POST['job_title']))) {
         $feedback_msg = "Company Name and Job Title are required.";
         $feedback_class = "alert-error";
     } else {
-        // Handle PDF upload
+
         $pdf_filename = null;
         if (isset($_FILES['job_pdf']) && $_FILES['job_pdf']['error'] == UPLOAD_ERR_OK) {
             $file = $_FILES['job_pdf'];
             $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-            
-            // Validate file type
+
             if ($file_ext !== 'pdf') {
                 $feedback_msg = "Only PDF files are allowed.";
                 $feedback_class = "alert-error";
             }
-            // Validate file size (5MB max)
+
             elseif ($file['size'] > 5 * 1024 * 1024) {
                 $feedback_msg = "File size must be less than 5MB.";
                 $feedback_class = "alert-error";
             } else {
-                // Generate unique filename
+
                 $pdf_filename = uniqid('job_', true) . '.pdf';
                 $upload_path = '../uploads/job_pdfs/' . $pdf_filename;
-                
-                // Move uploaded file
+
                 if (!move_uploaded_file($file['tmp_name'], $upload_path)) {
                     $feedback_msg = "Failed to upload PDF file.";
                     $feedback_class = "alert-error";
@@ -47,8 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_job'])) {
                 }
             }
         }
-        
-        // Only proceed if no upload errors
+
         if (empty($feedback_msg)) {
             $sql = "INSERT INTO jobs (company_name, job_title, description, package_lpa, required_cgpa, max_backlogs, job_description_pdf) VALUES (?, ?, ?, ?, ?, ?, ?)";
             if ($stmt = $conn->prepare($sql)) {
@@ -63,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_job'])) {
                 );
                 
                 if ($stmt->execute()) {
-                    // Ensure table exists
+
                     $conn->query("CREATE TABLE IF NOT EXISTS `notifications` (
                       `notification_id` int(11) NOT NULL AUTO_INCREMENT,
                       `student_regdno` varchar(11) NOT NULL,
@@ -78,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_job'])) {
                       CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`student_regdno`) REFERENCES `student` (`regdno`) ON DELETE CASCADE
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
-                    // Notify all students about the new job posting
                     $job_title_val = $_POST['job_title'];
                     $company_val = $_POST['company_name'];
                     $notif_title = "New Job Posted";
@@ -95,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_job'])) {
                     header("location: admin_manage_jobs.php");
                     exit;
                 } else {
-                    // Delete uploaded file if database insert fails
+
                     if ($pdf_filename && file_exists('../uploads/job_pdfs/' . $pdf_filename)) {
                         unlink('../uploads/job_pdfs/' . $pdf_filename);
                     }
@@ -108,9 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_job'])) {
     }
 }
 
-
-
-// Fetch Data
 $jobs = [];
 $sql_fetch_jobs = "SELECT * FROM jobs ORDER BY created_at DESC";
 if ($result = $conn->query($sql_fetch_jobs)) {
@@ -139,7 +131,6 @@ $conn->close();
     <?php include '../includes/header_includes.php'; ?>
 </head>
     <style>
-        /* Table Styles */
         .table-container {
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -172,8 +163,6 @@ $conn->close();
         tr:hover {
             background-color: var(--bg-body);
         }
-        
-        /* Column Widths */
         th:nth-child(1) { width: 35%; } /* Role & Company */
         th:nth-child(2) { width: 30%; } /* Eligibility */
         th:nth-child(3) { width: 20%; } /* Package */
@@ -195,8 +184,6 @@ $conn->close();
                 </div>
 
                 <div class="grid grid-cols-3 gap-6" style="grid-template-columns: 1fr 2fr;">
-                    
-                    <!-- Add Job Form -->
                     <div class="card" style="height: fit-content;">
                         <div class="card-header" style="margin-bottom: 1.5rem;">
                             <h3><i data-lucide="briefcase" style="width: 20px; vertical-align: middle;"></i> New Job Posting</h3>
@@ -252,8 +239,6 @@ $conn->close();
                             </button>
                         </form>
                     </div>
-
-                    <!-- Jobs List -->
                     <div class="card">
                         <div class="card-header" style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -338,7 +323,6 @@ $conn->close();
     <script>
         lucide.createIcons();
 
-        // Search & Filter Logic
         const searchInput = document.getElementById('job-search');
         const companyFilter = document.getElementById('filter-company');
         const roleFilter = document.getElementById('filter-role');
@@ -367,15 +351,12 @@ $conn->close();
                 }
             });
 
-            // Show/Hide "No jobs found" message if needed
-            // (Optional: You can add a specific element for this)
         }
 
         if(searchInput) searchInput.addEventListener('keyup', filterJobs);
         if(companyFilter) companyFilter.addEventListener('change', filterJobs);
         if(roleFilter) roleFilter.addEventListener('change', filterJobs);
 
-        // Initialize Pagination
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof TablePagination !== 'undefined') {
                 new TablePagination('table', 10);
@@ -383,7 +364,6 @@ $conn->close();
         });
     </script>
     
-
 
     <script>
         lucide.createIcons();

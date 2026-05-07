@@ -1,5 +1,5 @@
 <?php
-// student_dashboard.php (Modernized)
+
 require_once '../includes/config.php';
 session_start();
  
@@ -12,7 +12,6 @@ $regdno = $_SESSION["num"];
 $student_data = null;
 $placement_data = null;
 
-// Fetch Student Data
 $sql_student = "SELECT s.*, m.cgpa, m.backlogs FROM student s LEFT JOIN marks m ON s.regdno = m.regdno WHERE s.regdno = ?";
 if ($stmt_student = $conn->prepare($sql_student)) {
     $stmt_student->bind_param("s", $regdno);
@@ -24,7 +23,6 @@ if ($stmt_student = $conn->prepare($sql_student)) {
 
 if (!$student_data) { echo "Error: Student data not found."; exit; }
 
-// Fetch Placement Data if placed
 if ($student_data['placement_status'] == 'Placed') {
     $sql_placement = "SELECT p.package_lpa, p.placement_date, j.company_name, j.job_title FROM placements p LEFT JOIN jobs j ON p.job_id = j.job_id WHERE p.student_regdno = ?";
     if($stmt_placement = $conn->prepare($sql_placement)){
@@ -35,7 +33,7 @@ if ($student_data['placement_status'] == 'Placed') {
         $stmt_placement->close();
     }
 }
-// Resume Upload Logic
+
 $resume_msg = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
     $target_dir = "../uploads/resumes/";
@@ -56,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
                 $stmt->bind_param("ss", $target_file, $regdno);
                 $stmt->execute();
                 $stmt->close();
-                // Refresh data
+
                 $student_data['resume_path'] = $target_file;
                 $_SESSION['flash_message'] = "Resume uploaded successfully!";
                 header("Location: student_dashboard.php");
@@ -84,14 +82,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
             <?php include '../includes/header.php'; ?>
             
             <div class="container" style="padding-top: 2rem;">
-            
-                <!-- Welcome Section -->
                 <div style="margin-bottom: 2rem;">
                     <h1 style="font-size: 1.75rem; color: var(--secondary);">Hello, <?php echo htmlspecialchars($student_data['name']); ?> 👋</h1>
                     <p class="text-muted">Here's what's happening with your placement journey.</p>
                 </div>
-
-                <!-- Stats Grid -->
                 <div class="grid grid-cols-3 gap-6" style="margin-bottom: 1.5rem;">
                     <div class="stat-card">
                         <div>
@@ -127,12 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
                 </div>
 
                 <div class="grid grid-cols-3 gap-6">
-                    
-                    <!-- Left Column -->
                     <div class="flex flex-col gap-6 col-span-2">
-                        
-                
-                        <!-- Resume Upload Section (Compact & Functional) -->
                         <div class="card" style="padding: 1rem;">
                             
                             <div class="flex justify-between items-center mb-6">
@@ -182,7 +171,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
                             const dropArea = document.getElementById('drop-area');
                             const fileNameDisplay = document.getElementById('file-name');
 
-                            // Highlight drop area 
                             ['dragenter', 'dragover'].forEach(eventName => {
                                 dropArea.addEventListener(eventName, () => {
                                     dropArea.style.borderColor = 'var(--primary)';
@@ -197,7 +185,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
                                 }, false);
                             });
 
-                            // File selected
                             fileInput.addEventListener('change', function() {
                                 if(this.files && this.files[0]) {
                                     fileNameDisplay.style.display = 'block';
@@ -207,8 +194,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
                                 }
                             });
                         </script>
-
-                        <!-- Actions Card -->
                         <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border: none;">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -254,8 +239,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
                         <?php endif; ?>
                         
                     </div>
-
-                    <!-- Right Column: Profile Summary -->
                     <div class="card" style="height: 100%; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
                         <div style="background: linear-gradient(135deg, var(--bg-input), white); padding: 2rem 1.5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--border);">
                             <div style="width: 80px; height: 80px; background: white; border: 4px solid white; box-shadow: var(--shadow-md); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem; color: var(--primary);">

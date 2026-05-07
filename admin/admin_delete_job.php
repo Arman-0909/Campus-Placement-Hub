@@ -1,10 +1,8 @@
 <?php
-// delete_job.php
 
 session_name("staff");
 session_start();
 
-// Ensure the user is logged in
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: admin_login.php");
     exit;
@@ -12,7 +10,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 require_once "../includes/config.php";
 
-// Security Check: Job ID must be provided and must be a number
 if(!isset($_GET["id"]) || !is_numeric($_GET["id"])){
     header("location: admin_manage_jobs.php");
     exit;
@@ -33,7 +30,6 @@ if($stmt = $conn->prepare($sql)){
 }
 $conn->close();
 
-// Redirect back to the job list
 header("location: admin_manage_jobs.php");
 exit;
 ?>

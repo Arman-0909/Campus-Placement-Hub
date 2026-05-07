@@ -1,5 +1,5 @@
 <?php
-// admin_login.php (FINAL - SECURE & Admin-Only)
+
 session_name("staff");
 session_start();
 require_once "../includes/config.php";
@@ -50,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Campus Placement Hub</title>
-    <!-- Dependencies -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -58,15 +57,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])){
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="login-page">
-    
-    <!-- Background Video -->
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; opacity: 0.1;">
         <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
             <source src="../assets/media/bg.mp4" type="video/mp4">
         </video>
     </div>
-
-    <!-- Login Container -->
     <div class="login-card card" style="position: relative; z-index: 10;">
         <div class="login-header">
             <div class="login-logo" style="background: var(--secondary);">
@@ -128,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])){
         togglePassword.addEventListener('click', function (e) {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
-            // Re-render icon
+
             if(type === 'text'){
                 togglePassword.innerHTML = '<i data-lucide="eye-off" style="width: 18px;"></i>';
             } else {
