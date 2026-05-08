@@ -72,7 +72,6 @@ MYCPH/
 ├── 📁 docs/                # Project documentation, SQL schema, reports
 ├── 📁 includes/            # Reusable PHP components — config, header, sidebar, auth
 ├── 📁 js/                  # Frontend logic — validation, pagination, interactivity
-├── 📁 scripts/             # Backend maintenance & utility scripts
 ├── 📁 student/             # Student portal — profile, job listings, applications
 ├── 📁 uploads/             # Secure storage for student-uploaded resumes (PDF)
 ├── 📁 uploaded_files/      # Additional file storage for processed uploads
