@@ -1,0 +1,48 @@
+# =============================================
+# Campus Placement Hub — .gitignore
+# =============================================
+
+# --- Uploaded user files (runtime data) ---
+uploaded_files/
+uploads/resumes/
+uploads/job_pdfs/
+
+# --- Environment / local config overrides ---
+.env
+.env.local
+*.env
+
+# --- IDE & editor directories ---
+.vscode/
+.idea/
+*.suo
+*.user
+*.workspace
+*.code-workspace
+
+# --- OS generated files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- PHP logs and cache ---
+*.log
+error_log
+*.cache
+
+# --- Composer (not used currently, but future-proof) ---
+vendor/
+composer.lock
+
+# --- Node / NPM (if tooling is ever added) ---
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# --- Temporary files ---
+*.tmp
+*.bak
+*.swp
+*.orig
+temp/
+tmp/

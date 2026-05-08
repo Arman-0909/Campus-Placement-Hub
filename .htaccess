@@ -1,0 +1,46 @@
+# =============================================
+# Campus Placement Hub — Apache .htaccess
+# =============================================
+
+Options -Indexes
+
+# --- PHP Settings ---
+php_flag display_errors Off
+php_value upload_max_filesize 10M
+php_value post_max_size 12M
+php_value max_execution_time 60
+
+# --- Protect sensitive directories ---
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct access to includes folder
+    RewriteRule ^includes/ - [F,L]
+
+    # Block direct access to docs folder (SQL schema)
+    RewriteRule ^docs/ - [F,L]
+
+    # Block direct access to API without session
+    # (auth handled in PHP, but add layer here)
+</IfModule>
+
+# --- Protect config and SQL files ---
+<FilesMatch "\.(sql|log|bak|env|ini|sh)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# --- Security Headers ---
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# --- Disable server signature ---
+ServerSignature Off
+
+# --- Custom error pages ---
+ErrorDocument 403 /MYCPH/index.php
+ErrorDocument 404 /MYCPH/index.php
