@@ -132,7 +132,7 @@
         </form>
 
         <div class="text-center" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-            <a href="index.php" class="text-sm text-muted hover:text-primary flex items-center justify-center gap-2">
+            <a href="../index.php" class="text-sm text-muted hover:text-primary flex items-center justify-center gap-2">
                 <i data-lucide="arrow-left" style="width: 14px;"></i> Back to Home
             </a>
         </div>
