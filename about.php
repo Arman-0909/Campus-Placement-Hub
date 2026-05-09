@@ -1,62 +1,60 @@
-<?php
-
-require_once 'includes/header_includes.php';
-?>
+<?php require_once 'includes/header_includes.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Campus Placement Hub</title>
     <style>
-        html, body { height: 100%; overflow: hidden; }
+        html, body { height: 100%; margin: 0; overflow: hidden; }
 
-        .about-cards-wrapper {
+        .split-layout { display: flex; height: 100%; }
+        .brand-panel   { flex: 0 0 42%; }
+
+        .about-right {
+            flex: 1;
             display: flex;
-            flex-direction: row;
-            gap: 1cm;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            gap: 1cm;
+            background: #f8fafc;
         }
 
-        .profile-card {
-            padding: 1.25rem !important;
-            width: 240px !important;
-            min-width: unset !important;
-            max-width: unset !important;
+        .team-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 1.75rem 1.5rem;
+            width: 270px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .avatar {
-            width: 52px !important;
-            height: 52px !important;
-            font-size: 1rem !important;
-            margin-bottom: 0.75rem !important;
+        .team-avatar {
+            width: 68px; height: 68px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1.15rem; color: #fff;
+            margin-bottom: 0.85rem; letter-spacing: 0.05em;
         }
 
-        .profile-header h2 { font-size: 1rem !important; }
-        .badge { font-size: 0.7rem !important; padding: 0.2rem 0.6rem !important; }
-        .contact-item { padding: 0.5rem 0 !important; }
-        .icon-box { width: 28px !important; height: 28px !important; }
-        .icon-box i { width: 13px !important; height: 13px !important; }
-        .label { font-size: 0.65rem !important; }
-        .value, .value.link { font-size: 0.72rem !important; }
-        .action-area { margin-top: 0.75rem !important; }
-        .btn-block { padding: 0.5rem 0.75rem !important; font-size: 0.78rem !important; }
+        .team-name  { font-size: 1.05rem; font-weight: 700; color: #1e293b; margin: 0 0 0.35rem; }
+        .team-role  { display: inline-block; font-size: 0.74rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 1rem; }
+        .team-hr    { width: 100%; border: none; border-top: 1px solid #f1f5f9; margin: 0 0 0.85rem; }
 
-        .avatar-black { background: #1e293b !important; }
-        .avatar-blue  { background: #2563eb !important; }
+        .team-row   { display: flex; align-items: center; gap: 0.5rem; width: 100%; margin-bottom: 0.55rem; }
 
-        .content-panel {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            overflow: hidden !important;
-        }
+        .team-icon  { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .team-icon i { width: 15px; height: 15px; }
+
+        .team-lbl   { display: block; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #94a3b8; }
+        .team-val   { display: block; font-size: 0.8rem; color: #475569; word-break: break-all; text-align: left; }
+        .team-val a { color: inherit; text-decoration: none; }
+        .team-val a:hover { text-decoration: underline; }
     </style>
 </head>
-
 <body>
     <a href="javascript:history.back()" class="back-btn" title="Go Back">
         <i data-lucide="x"></i>
@@ -70,94 +68,63 @@ require_once 'includes/header_includes.php';
             </div>
         </div>
 
-        <div class="content-panel">
-            <div class="about-cards-wrapper">
+        <div class="about-right">
 
-                <div class="profile-card">
-                    <div class="avatar avatar-black">
-                        <span>AS</span>
+            <!-- Armandeep Singh -->
+            <div class="team-card">
+                <div class="team-avatar" style="background:#1e293b;">AS</div>
+                <p class="team-name">Armandeep Singh</p>
+                <span class="team-role" style="background:#f1f5f9;color:#1e293b;">Lead Developer</span>
+                <hr class="team-hr">
+                <div class="team-row">
+                    <div class="team-icon" style="background:#f1f5f9;">
+                        <i data-lucide="mail" style="color:#475569;"></i>
                     </div>
-
-                    <div class="profile-header">
-                        <h2>Armandeep Singh</h2>
-                        <div class="badge">Lead Developer</div>
-                    </div>
-
-                    <div class="contact-list">
-                        <div class="contact-item">
-                            <div class="icon-box">
-                                <i data-lucide="mail"></i>
-                            </div>
-                            <div class="info">
-                                <span class="label">Contact</span>
-                                <a href="mailto:armandeep0088@gmail.com" class="value link">armandeep0088@gmail.com</a>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="icon-box">
-                                <i data-lucide="graduation-cap"></i>
-                            </div>
-                            <div class="info">
-                                <span class="label">Education</span>
-                                <span class="value">CGC University</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="action-area">
-                        <a href="https://armandeepsingh-dev.netlify.app/" target="_blank" class="btn btn-primary btn-block">
-                            <i data-lucide="globe"></i>
-                            View Portfolio
-                        </a>
+                    <div>
+                        <span class="team-lbl">Email</span>
+                        <span class="team-val"><a href="mailto:armandeep0088@gmail.com">armandeep0088@gmail.com</a></span>
                     </div>
                 </div>
-
-                <div class="profile-card">
-                    <div class="avatar avatar-blue">
-                        <span>AN</span>
+                <div class="team-row">
+                    <div class="team-icon" style="background:#f1f5f9;">
+                        <i data-lucide="graduation-cap" style="color:#475569;"></i>
                     </div>
-
-                    <div class="profile-header">
-                        <h2>Anurag Shukla</h2>
-                        <div class="badge" style="background: #dbeafe; color: #1d4ed8;">QA Tester</div>
-                    </div>
-
-                    <div class="contact-list">
-                        <div class="contact-item">
-                            <div class="icon-box">
-                                <i data-lucide="mail"></i>
-                            </div>
-                            <div class="info">
-                                <span class="label">Contact</span>
-                                <a href="mailto:anuragshukla0005@gmail.com" class="value link">anuragshukla0005@gmail.com</a>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="icon-box">
-                                <i data-lucide="graduation-cap"></i>
-                            </div>
-                            <div class="info">
-                                <span class="label">Education</span>
-                                <span class="value">CGC University</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="action-area">
-                        <a href="mailto:anuragshukla0005@gmail.com" class="btn btn-primary btn-block" style="background: #2563eb;">
-                            <i data-lucide="mail"></i>
-                            Get in Touch
-                        </a>
+                    <div>
+                        <span class="team-lbl">Education</span>
+                        <span class="team-val">CGC University</span>
                     </div>
                 </div>
-
             </div>
+
+            <!-- Anurag Shukla -->
+            <div class="team-card">
+                <div class="team-avatar" style="background:#2563eb;">AN</div>
+                <p class="team-name">Anurag Shukla</p>
+                <span class="team-role" style="background:#dbeafe;color:#1d4ed8;">QA Tester</span>
+                <hr class="team-hr">
+                <div class="team-row">
+                    <div class="team-icon" style="background:#dbeafe;">
+                        <i data-lucide="mail" style="color:#2563eb;"></i>
+                    </div>
+                    <div>
+                        <span class="team-lbl">Email</span>
+                        <span class="team-val"><a href="mailto:anuragshukla0005@gmail.com">anuragshukla0005@gmail.com</a></span>
+                    </div>
+                </div>
+                <div class="team-row">
+                    <div class="team-icon" style="background:#dbeafe;">
+                        <i data-lucide="graduation-cap" style="color:#2563eb;"></i>
+                    </div>
+                    <div>
+                        <span class="team-lbl">Education</span>
+                        <span class="team-val">CGC University</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
-
 </html>
