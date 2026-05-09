@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['apply_for_job'])) {
                     $stmt_an->close();
                 }
 
-                $_SESSION['flash_message'] = "Application submitted successfully!";
+                $_SESSION['flash_success'] = "Application submitted successfully!";
             }
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {

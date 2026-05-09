@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_company'])) {
             $stmt->bind_param("sss", $_POST['company_name'], $_POST['website'], $_POST['description']);
             try {
                 $stmt->execute();
-                $_SESSION['flash_message'] = "Company '" . htmlspecialchars($_POST['company_name']) . "' added successfully!";
+                $_SESSION['flash_success'] = "Company '" . htmlspecialchars($_POST['company_name']) . "' added successfully!";
                 header("location: admin_manage_companies.php");
                 exit;
             } catch(Exception $e) {

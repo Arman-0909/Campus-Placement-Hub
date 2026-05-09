@@ -32,8 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['regdno'])) {
         $stmt_marks->close();
 
         $conn->commit();
-        $conn->commit();
-        $_SESSION['flash_message'] = "Success! Student profile has been updated.";
+        $_SESSION['flash_success'] = "Success! Student profile has been updated.";
         header("Location: admin_edit_student.php?regdno=" . urlencode($regdno));
         exit;
     } catch (Exception $e) {

@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['job_id'])) {
                     $job_id
                 );
                 if($stmt->execute()) {
-                    $_SESSION['flash_message'] = "Job posting updated successfully!";
+                    $_SESSION['flash_success'] = "Job posting updated successfully!";
                     header("Location: admin_edit_job.php?id=" . urlencode($job_id));
                     exit;
                 } else {
@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['job_id'])) {
                     $job_id
                 );
                 if($stmt->execute()) {
-                    $_SESSION['flash_message'] = "Job posting updated successfully!";
+                    $_SESSION['flash_success'] = "Job posting updated successfully!";
                     header("Location: admin_edit_job.php?id=" . urlencode($job_id));
                     exit;
                 } else {

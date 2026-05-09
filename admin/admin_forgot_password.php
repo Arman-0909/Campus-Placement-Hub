@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt_update->bind_param("ss", $new_hashed_password, $username);
             
             if($stmt_update->execute()){
-                $_SESSION['flash_message'] = "Password changed successfully! You can now log in with your new password.";
+                $_SESSION['flash_success'] = "Password changed successfully! You can now log in with your new password.";
                 header("Location: admin_login.php");
                 exit;
             } else {

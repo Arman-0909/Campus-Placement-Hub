@@ -34,7 +34,7 @@ $department = $_SESSION['department'] ?? '';
             $stmt->bind_param("sssssss", $regdno, $name, $email, $contact, $dob, $student_department, $hashed_password);
             try {
                 $stmt->execute();
-                $_SESSION['flash_message'] = "Student added successfully!";
+                $_SESSION['flash_success'] = "Student added successfully!";
                 header("Location: admin_manage_students.php");
                 exit;
             } catch(Exception $e) {

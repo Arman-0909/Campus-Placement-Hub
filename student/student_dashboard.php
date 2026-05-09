@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["resume"])) {
                 $stmt->close();
 
                 $student_data['resume_path'] = $target_file;
-                $_SESSION['flash_message'] = "Resume uploaded successfully!";
+                $_SESSION['flash_success'] = "Resume uploaded successfully!";
                 header("Location: student_dashboard.php");
                 exit;
             }

@@ -3,49 +3,44 @@
 session_name("staff");
 session_start();
 
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: admin_login.php");
     exit;
 }
 
 require_once "../includes/config.php";
 
-if(!isset($_GET["regdno"]) || empty(trim($_GET["regdno"]))){
+if (!isset($_GET["regdno"]) || empty(trim($_GET["regdno"]))) {
     header("location: admin_manage_students.php");
     exit;
 }
 
-require_once "../includes/config.php";
 $regdno = trim($_GET["regdno"]);
 
-mysqli_autocommit($conn, false);
+$conn->begin_transaction();
 
-$all_queries_succeeded = true;
+try {
+    $stmt = $conn->prepare("DELETE FROM marks WHERE regdno = ?");
+    $stmt->bind_param("s", $regdno);
+    $stmt->execute();
+    $stmt->close();
 
-$sql1 = "DELETE FROM marks WHERE regdno = '$regdno'";
-if (!mysqli_query($conn, $sql1)) {
-    $all_queries_succeeded = false;
+    $stmt = $conn->prepare("DELETE FROM package WHERE regdno = ?");
+    $stmt->bind_param("s", $regdno);
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $conn->prepare("DELETE FROM student WHERE regdno = ?");
+    $stmt->bind_param("s", $regdno);
+    $stmt->execute();
+    $stmt->close();
+
+    $conn->commit();
+} catch (Exception $e) {
+    $conn->rollback();
 }
 
-$sql2 = "DELETE FROM package WHERE regdno = '$regdno'";
-if (!mysqli_query($conn, $sql2)) {
-    $all_queries_succeeded = false;
-}
-
-$sql3 = "DELETE FROM student WHERE regdno = '$regdno'";
-if (!mysqli_query($conn, $sql3)) {
-    $all_queries_succeeded = false;
-}
-
-if ($all_queries_succeeded) {
-
-    mysqli_commit($conn);
-} else {
-
-    mysqli_rollback($conn);
-}
-
-mysqli_close($conn);
+$conn->close();
 
 header("location: admin_manage_students.php");
 exit;

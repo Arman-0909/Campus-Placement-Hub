@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_job'])) {
                         $stmt_notif->close();
                     }
                     
-                    $_SESSION['flash_message'] = "New job posting for '" . htmlspecialchars($_POST['company_name']) . "' added successfully!";
+                    $_SESSION['flash_success'] = "New job posting for '" . htmlspecialchars($_POST['company_name']) . "' added successfully!";
                     header("location: admin_manage_jobs.php");
                     exit;
                 } else {

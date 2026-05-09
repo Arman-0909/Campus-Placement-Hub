@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['application_id'])) {
     if($stmt_update = $conn->prepare($sql_update)) {
         $stmt_update->bind_param("si", $new_status, $application_id);
         if($stmt_update->execute()){
-            $_SESSION['flash_message'] = "Application status updated successfully.";
+            $_SESSION['flash_success'] = "Application status updated successfully.";
 
             $notif_check = $conn->query("SHOW TABLES LIKE 'notifications'");
             if ($notif_check && $notif_check->num_rows > 0) {

@@ -1,5 +1,16 @@
 <?php
 
+function timeAgo($datetime) {
+    $now = new DateTime();
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+    if ($diff->d > 0) return $diff->d . 'd ago';
+    if ($diff->h > 0) return $diff->h . 'h ago';
+    if ($diff->i > 0) return $diff->i . 'm ago';
+    return 'Just now';
+}
+
 if (isset($_GET['role']) && $_GET['role'] === 'admin') {
     session_name("staff");
 }
@@ -22,9 +33,9 @@ $unread_count = 0;
 if ($is_admin) {
     $table_check = $conn->query("SHOW TABLES LIKE 'admin_notifications'");
     if ($table_check->num_rows > 0) {
-        $sql = "SELECT notification_id, type, title, message, is_read, created_at 
-                FROM admin_notifications 
-                ORDER BY created_at DESC 
+        $sql = "SELECT notification_id, type, title, message, is_read, created_at
+                FROM admin_notifications
+                ORDER BY created_at DESC
                 LIMIT 20";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->execute();
@@ -36,8 +47,7 @@ if ($is_admin) {
             $stmt->close();
         }
 
-        $sql_count = "SELECT COUNT(*) as cnt FROM admin_notifications WHERE is_read = 0";
-        if ($stmt = $conn->prepare($sql_count)) {
+        if ($stmt = $conn->prepare("SELECT COUNT(*) as cnt FROM admin_notifications WHERE is_read = 0")) {
             $stmt->execute();
             $unread_count = $stmt->get_result()->fetch_assoc()['cnt'];
             $stmt->close();
@@ -47,10 +57,10 @@ if ($is_admin) {
     $regdno = $_SESSION["num"];
     $table_check = $conn->query("SHOW TABLES LIKE 'notifications'");
     if ($table_check->num_rows > 0) {
-        $sql = "SELECT notification_id, type, title, message, is_read, created_at 
-                FROM notifications 
-                WHERE student_regdno = ? 
-                ORDER BY created_at DESC 
+        $sql = "SELECT notification_id, type, title, message, is_read, created_at
+                FROM notifications
+                WHERE student_regdno = ?
+                ORDER BY created_at DESC
                 LIMIT 20";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $regdno);
@@ -63,8 +73,7 @@ if ($is_admin) {
             $stmt->close();
         }
 
-        $sql_count = "SELECT COUNT(*) as cnt FROM notifications WHERE student_regdno = ? AND is_read = 0";
-        if ($stmt = $conn->prepare($sql_count)) {
+        if ($stmt = $conn->prepare("SELECT COUNT(*) as cnt FROM notifications WHERE student_regdno = ? AND is_read = 0")) {
             $stmt->bind_param("s", $regdno);
             $stmt->execute();
             $unread_count = $stmt->get_result()->fetch_assoc()['cnt'];
@@ -78,17 +87,6 @@ $conn->close();
 header('Content-Type: application/json');
 echo json_encode([
     'notifications' => $notifications,
-    'unread_count' => (int)$unread_count
+    'unread_count'  => (int)$unread_count
 ]);
-
-function timeAgo($datetime) {
-    $now = new DateTime();
-    $ago = new DateTime($datetime);
-    $diff = $now->diff($ago);
-    
-    if ($diff->d > 0) return $diff->d . 'd ago';
-    if ($diff->h > 0) return $diff->h . 'h ago';
-    if ($diff->i > 0) return $diff->i . 'm ago';
-    return 'Just now';
-}
 ?>

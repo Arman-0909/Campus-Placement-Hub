@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_placement'])) {
             $stmt_update->close();
 
             $conn->commit();
-            $_SESSION['flash_message'] = "Placement recorded successfully! Student marked as 'Placed'.";
+            $_SESSION['flash_success'] = "Placement recorded successfully! Student marked as 'Placed'.";
             header("location: admin_manage_placements.php");
             exit;
 

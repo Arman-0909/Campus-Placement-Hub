@@ -1,10 +1,6 @@
 <?php
 
-if (isset($_SESSION['flash_message'])) {
-    $msg = $_SESSION['flash_message'];
-    $type = 'success';
-    unset($_SESSION['flash_message']);
-} elseif (isset($_SESSION['flash_success'])) {
+if (isset($_SESSION['flash_success'])) {
     $msg = $_SESSION['flash_success'];
     $type = 'success';
     unset($_SESSION['flash_success']);

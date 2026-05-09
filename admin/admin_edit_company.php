@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['original_company_name'
     if($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("ssss", $new_company_name, $website, $description, $original_company_name);
         if($stmt->execute()) {
-            $_SESSION['flash_message'] = "Company details updated successfully!";
+            $_SESSION['flash_success'] = "Company details updated successfully!";
             header("Location: admin_edit_company.php?id=" . urlencode($new_company_name));
             exit;
         } else {

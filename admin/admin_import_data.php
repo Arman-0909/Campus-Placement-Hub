@@ -178,7 +178,7 @@ if(isset($_POST["submit"]))
             if ($error_count > 0) $parts[] = "<strong>{$error_count} failed</strong>";
 
             if ($success_count > 0 && $error_count == 0 && $skipped_count == 0) {
-                $_SESSION['flash_message'] = "Success! All {$success_count} records processed.";
+                $_SESSION['flash_success'] = "Success! All {$success_count} records processed.";
                 header("Location: admin_import_data.php?tab=" . $active_tab);
                 exit;
             } elseif (empty($parts)) {
